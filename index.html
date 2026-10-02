@@ -7,7 +7,14 @@
 <style>
 /* pdf2html base stylesheet — fixed-layout, faithful page reproduction. */
 html, body { margin: 0; padding: 0; }
-body { background: #e8e8e8; }
+body {
+	background: linear-gradient(180deg, #f3f3f3 0%, #e9e9e9 100%);
+	color: #111;
+	overflow-x: hidden;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: geometricPrecision;
+}
 
 /* One page = a positioning context sized to the PDF page box (CSS px). isolation:isolate makes it a
    stacking context so each page's per-element paint-order z-indexes stay self-contained (and the fixed
@@ -19,6 +26,8 @@ body { background: #e8e8e8; }
 	background: #fff;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
 	overflow: hidden;
+	width: 520px;
+	max-width: calc(100vw - 18px);
 }
 
 /* The text-suppressed background raster (vectors + images), behind the text. */
@@ -56,6 +65,11 @@ body { background: #e8e8e8; }
 	line-height: 1;
 	transform-origin: 0 0;
 	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: geometricPrecision;
+	letter-spacing: 0;
+	backface-visibility: hidden;
 }
 
 /* An extracted image. Each element carries an inline z-index equal to its paint sequence (this class value
@@ -230,6 +244,17 @@ body { background: #e8e8e8; }
 	.toc, .thumbs { display: none; }
 	.page { margin: 0; box-shadow: none; break-after: page; }
 	.page:last-child { break-after: auto; }
+}
+
+@media (max-width: 620px) {
+	body {
+		padding: 0;
+	}
+	.page {
+		margin: 0 auto 16px;
+		transform-origin: top center;
+		transform: scale(calc((100vw - 16px) / 520));
+	}
 }
 .c0{font-family:"f0", sans-serif;font-size:17.33px;color:#0500ff}
 .c1{font-family:"f1", sans-serif;font-size:17.33px;color:#0500ff}

